@@ -346,7 +346,7 @@ export default function Home() {
               }}
             >
               <p style={{ color: "grey" }}>
-                10K Eye Traits apply to Baby Breads.
+                10K Mouth Traits apply to Baby Breads.
               </p>
             </Box>
             {/* <Countdown date={startTime}> */}

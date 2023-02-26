@@ -43,7 +43,7 @@ export default function App({ Component, pageProps }: AppProps) {
     <>
       <CssBaseline />
       <SnackbarProvider>
-        <ConnectionProvider endpoint={process.env["NEXT_PUBLIC_ENDPOINT"] || "https://api.mainnet-beta.solana.com"}>
+        <ConnectionProvider endpoint={process.env["NEXT_PUBLIC_ENDPOINT"] || "https://api.mainnet-beta.solana.com"} config={{commitment: 'confirmed', confirmTransactionInitialTimeout: 60000}}>
           <WalletProvider wallets={wallets} autoConnect>
             <WalletModalProvider>
               <Component {...pageProps} />
