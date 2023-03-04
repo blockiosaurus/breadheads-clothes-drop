@@ -10,6 +10,7 @@ import {
   DialogContent,
   Link,
   IconButton,
+  Stack,
 } from "@mui/material";
 import CloseIcon from "@mui/icons-material/Close";
 import { WalletMultiButton } from "@solana/wallet-adapter-react-ui";
@@ -75,6 +76,64 @@ export default function Home() {
         candyMachine,
         collectionUpdateAuthority: candyMachine.authorityAddress,
         group: "CRUMB",
+      });
+
+      const mintResponse = await mint?.response;
+      setIsFetching(false);
+      if (mintResponse) {
+        mint?.nft.json?.image ? setNftImage(mint?.nft.json?.image) : null;
+        mint?.response.signature
+          ? setExplorerLink(`https://solscan.io/tx/${mint?.response.signature}`)
+          : null;
+      }
+      getCandyMachine();
+    } catch (error) {
+      console.error("Mint Error", error);
+      enqueueSnackbar("Mint Error: Check console logs for more details", {
+        variant: "error",
+        anchorOrigin: { vertical: "top", horizontal: "right" },
+      });
+    }
+  };
+
+  const onMintBonkClick = async () => {
+    try {
+      if (!candyMachine) throw new Error("No CandyMachine");
+      setIsModalOpen(true);
+      setIsFetching(true);
+      const mint = await metaplex?.candyMachines().mint({
+        candyMachine,
+        collectionUpdateAuthority: candyMachine.authorityAddress,
+        group: "BONK",
+      });
+
+      const mintResponse = await mint?.response;
+      setIsFetching(false);
+      if (mintResponse) {
+        mint?.nft.json?.image ? setNftImage(mint?.nft.json?.image) : null;
+        mint?.response.signature
+          ? setExplorerLink(`https://solscan.io/tx/${mint?.response.signature}`)
+          : null;
+      }
+      getCandyMachine();
+    } catch (error) {
+      console.error("Mint Error", error);
+      enqueueSnackbar("Mint Error: Check console logs for more details", {
+        variant: "error",
+        anchorOrigin: { vertical: "top", horizontal: "right" },
+      });
+    }
+  };
+
+  const onMintHadesClick = async () => {
+    try {
+      if (!candyMachine) throw new Error("No CandyMachine");
+      setIsModalOpen(true);
+      setIsFetching(true);
+      const mint = await metaplex?.candyMachines().mint({
+        candyMachine,
+        collectionUpdateAuthority: candyMachine.authorityAddress,
+        group: "HADES",
       });
 
       const mintResponse = await mint?.response;
@@ -351,6 +410,7 @@ export default function Home() {
             </Box>
             {/* <Countdown date={startTime}> */}
             <MintContainer>
+              <Stack direction="row" spacing={2} style={{width: "100%"}}>
                 {(publicKey && userRemaining > 0) && (
                   <MintButton
                     size="large"
@@ -365,7 +425,45 @@ export default function Home() {
                         textTransform: "none",
                       }}
                     >
-                      {publicKey ? "Mint with CRUMBS" : "Connect Your Wallet"}
+                      {publicKey ? "1 CRUMBS Mint" : "Connect Your Wallet"}
+                    </p>
+                  </MintButton>
+                )}
+                {(publicKey && userRemaining > 0) && (
+                  <MintButton
+                    size="large"
+                    onClick={onMintBonkClick}
+                    disabled={!candyMachine || !publicKey}
+                    style={{ marginBottom: "8px" }}
+                  >
+                    <p
+                      style={{
+                        fontSize: "24px",
+                        fontWeight: 600,
+                        textTransform: "none",
+                      }}
+                    >
+                      {publicKey ? "3M BONK Mint" : "Connect Your Wallet"}
+                    </p>
+                  </MintButton>
+                )}
+              </Stack>
+              <Stack direction="row" spacing={2} style={{width: "100%"}}>
+                {(publicKey && userRemaining > 0) && (
+                  <MintButton
+                    size="large"
+                    onClick={onMintHadesClick}
+                    disabled={!candyMachine || !publicKey}
+                    style={{ marginBottom: "8px" }}
+                  >
+                    <p
+                      style={{
+                        fontSize: "24px",
+                        fontWeight: 600,
+                        textTransform: "none",
+                      }}
+                    >
+                      {publicKey ? "1 HADES Mint" : "Connect Your Wallet"}
                     </p>
                   </MintButton>
                 )}
@@ -382,43 +480,44 @@ export default function Home() {
                         textTransform: "none",
                       }}
                     >
-                      {publicKey ? "Mint with SOL" : "Connect Your Wallet"}
+                      {publicKey ? "0.1 SOL Mint" : "Connect Your Wallet"}
                     </p>
                   </MintButton>
                 )}
-                {(!publicKey) && (
-                  <WalletMultiButton
-                    style={{
-                      color: "white",
-                      background: "black",
-                      width: "100%",
-                      borderRadius: "100px",
-                      textAlign: "center",
-                      display: "inline-block",
-                      height: "64px",
-                    }}
-                  />
-                )}
-                {candyMachine?.candyGuard?.guards.mintLimit?.limit && (
-                  <h3
-                    style={{
-                      color: "black",
-                      textAlign: "center",
-                      fontSize: "24px",
-                      textTransform: "none",
-                      fontWeight: 400,
-                      marginBlockEnd: "0px",
-                    }}
-                  >
-                    {userRemaining} mints left
-                  </h3>
-                )}
-                {/* {(startTime?.getTime() && (startTime?.getTime() >= Date.now())) && (
+              </Stack>
+              {(!publicKey) && (
+                <WalletMultiButton
+                  style={{
+                    color: "white",
+                    background: "black",
+                    width: "100%",
+                    borderRadius: "100px",
+                    textAlign: "center",
+                    display: "inline-block",
+                    height: "64px",
+                  }}
+                />
+              )}
+              {candyMachine?.candyGuard?.guards.mintLimit?.limit && (
+                <h3
+                  style={{
+                    color: "black",
+                    textAlign: "center",
+                    fontSize: "24px",
+                    textTransform: "none",
+                    fontWeight: 400,
+                    marginBlockEnd: "0px",
+                  }}
+                >
+                  {userRemaining} mints left
+                </h3>
+              )}
+              {/* {(startTime?.getTime() && (startTime?.getTime() >= Date.now())) && (
                   <h2>Mint not yet active</h2>
                 )} */}
-              </MintContainer>
+            </MintContainer>
             {/* </Countdown> */}
-            <h2
+            {/* <h2
               style={{
                 color: "grey",
                 marginBottom: isDesktop ? "64px" : "0px",
@@ -450,7 +549,7 @@ export default function Home() {
               }}
             >
               <>{solPrice.toLocaleString()} SOL per NFT</>
-            </h2>
+            </h2> */}
           </HeroTitleContainer>
         )}
       </MainBody>
