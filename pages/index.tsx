@@ -49,7 +49,7 @@ export default function Home() {
 
   const isDesktop = useMediaQuery("(min-width: 1200px)");
   // const CM_ID = "9VS1GVnhv6JHgmkkPfu87HHccpaSuoeAY6gfTBs23sfK";
-  const CM_ID = "BGZPvSwxJhD8nAS8yM7EAzhtwowCr8f2zbarKLPQ2cXV";
+  const CM_ID = "AEsVXdwy4TTPL4WdSQ7Wu65XX1rAznNeR1H7kWA4srrX";
   const CM_NAME = "Bread Heads";
   const BH_COLLECTION = "44jmFBzJEw6hndKToYJtv1dKqey8NkfVbUdMgJaBevGF";
   const CRUMBS = "Bqf4Ep42BVL6gbFc47WUrV1jWhkPxYVbzqtMHaE7L63F";
@@ -405,7 +405,7 @@ export default function Home() {
               }}
             >
               <p style={{ color: "grey" }}>
-                10K Head Traits apply to Baby Breads.
+                10K Arm Traits apply to Baby Breads.
               </p>
             </Box>
             {/* <Countdown date={startTime}> */}
